@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>StatInk Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="favicon.ico" />
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f3f4f6; margin: 0; padding: 2rem; color: #1f2937; }
+    h1 { color: #3b82f6; }
+    input, button, textarea {
+      display: block; width: 100%; margin-top: 1rem; padding: 1rem;
+      font-size: 1rem; border-radius: 8px; border: 1px solid #ccc;
+    }
+    button {
+      background: #2563eb; color: white; border: none;
+      cursor: pointer; margin-top: 1rem;
+    }
+    button:hover { background: #1e40af; }
+    #output {
+      margin-top: 2rem; padding: 1rem; background: white; border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1); white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📡 StatInk: Real-Time Content Generator</h1>
+<p>Type in a topic and get AI-powered content using live data from the web.</p>
+
+<input type="text" id="topicInput" placeholder="Enter a topic (e.g., AI trends 2025)" />
+<button onclick="generateContent()">Generate</button>
+
+<div id="output"></div>
+
+<script>
+async function generateContent() {
+  const topic = document.getElementById("topicInput").value;
+  if (!topic) return alert("Please enter a topic.");
+
+  const output = document.getElementById("output");
+  output.innerHTML = "⏳ Fetching real-time data and generating content...";
+
+  try {
+    const response = await fetch(`/.netlify/functions/generate?topic=${encodeURIComponent(topic)}`);
+    const data = await response.json();
+    output.innerHTML = data.content || "❌ Could not generate content.";
+  } catch (err) {
+    output.innerHTML = "⚠️ Error fetching content. Try again later.";
+  }
+}
+</script>
+
+</body>
+</html>
